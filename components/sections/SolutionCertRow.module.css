@@ -1,0 +1,42 @@
+.section {
+  background: var(--bg);
+  padding-block: 0 88px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 24px 60px;
+}
+
+/* Measured directly off the reference PDF (~130px diameter) — much larger
+   than the Footer's own 48px cert badges, which is a different, denser
+   context (8 badges packed into a footer row). Don't shrink this to match
+   the Footer without re-measuring; the reference genuinely renders these
+   badges big. */
+.badge {
+  height: 128px;
+  width: auto;
+}
+
+@media (max-width: 1023px) {
+  .badge {
+    height: 96px;
+  }
+}
+
+@media (max-width: 767px) {
+  .section {
+    padding-block: 0 56px;
+  }
+
+  .row {
+    gap: 16px 32px;
+  }
+
+  .badge {
+    height: 64px;
+  }
+}

@@ -1,0 +1,136 @@
+.wrap {
+  position: relative;
+}
+
+.trigger {
+  composes: shell from "./FloatingField.module.css";
+  width: 100%;
+  justify-content: space-between;
+  padding-right: 14px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.label {
+  composes: label from "./FloatingField.module.css";
+}
+
+.value {
+  flex: 1;
+  min-width: 0;
+  padding: 20px 16px 6px;
+  font-size: 16px;
+  color: var(--fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chevron {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  color: var(--fg-muted);
+  transition: transform var(--dur) var(--ease);
+}
+
+.chevron[data-open="true"] {
+  transform: rotate(180deg);
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: #fff;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-btn);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-6px);
+  visibility: hidden;
+  /* No `visibility` in this list: a transitioned visibility keeps the panel
+     hidden long enough that the search input's focus-on-open silently fails
+     (same fix as DialCodeSelect). */
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.panel[data-open="true"] {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.searchWrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.searchIcon {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  color: var(--fg-muted);
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  color: var(--fg);
+}
+
+.list {
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--fg);
+  text-align: left;
+}
+
+.option[data-active="true"] {
+  background: #f4f4f4;
+}
+
+.option[data-selected="true"] {
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.dial {
+  flex: none;
+  color: var(--fg-muted);
+  font-size: 13px;
+}
+
+.empty {
+  padding: 16px 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--fg-muted);
+}
+
+.error {
+  composes: error from "./FloatingField.module.css";
+}

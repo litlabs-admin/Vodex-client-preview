@@ -1,0 +1,513 @@
+/* Section 3 (landing page) — full-bleed dark desk photo + inline
+   "Name + Phone -> Initiate Call" form. Same full-bleed escape hatch as
+   EnterpriseBand: the <section> itself carries no width constraint, and
+   only `.content` (via the shared `.container` class) opts into the page
+   grid. Deliberately NOT `overflow:hidden` on `.section` — the dial-code
+   popover (`DialCodeSelect`) is absolutely positioned and would clip. */
+
+.section {
+  position: relative;
+  isolation: isolate;
+  background: #0d1013;
+  display: flex;
+  align-items: center;
+  min-height: 797px; /* measured artboard height at 1516px — a floor, not a cap */
+  padding-block: 96px;
+  /* No overflow:hidden here — the dial-code popover (DialCodeSelect) is
+     absolutely positioned inside .content and would be clipped by it.
+     The ken-burns backdrop's own scale-up is clipped locally on .backdrop
+     instead (a sibling of .content, not an ancestor), so both needs are
+     met without the popover ever being at risk. */
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.backdrop img {
+  animation: kenBurns 26s var(--ease) infinite alternate;
+}
+
+@keyframes kenBurns {
+  from { transform: scale(1); }
+  to { transform: scale(1.055); }
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(4, 6, 8, 0.78) 0%,
+    rgba(4, 6, 8, 0.55) 34%,
+    rgba(4, 6, 8, 0.22) 68%,
+    rgba(4, 6, 8, 0.08) 100%
+  );
+}
+
+.content {
+  max-width: 1010px;
+  margin-right: auto;
+}
+
+/* --- Heading / lead --------------------------------------------------- */
+
+/* Deliberately local, not `--fs-display` — that token drives the page's
+   real h1 (Hero.tsx). Sized to roughly match the reference's measure
+   (~58-60px at the 1516 artboard) while staying a size step below the
+   hero's own 72px, so the two dark sections read as h1/h2, not two h1s. */
+.title {
+  font-size: clamp(30px, 3.95vw, 60px);
+  font-weight: 600;
+  line-height: 1.07;
+  letter-spacing: var(--ls-display);
+  color: #fff;
+}
+
+.title :global(.accent) {
+  font-size: 1.13em;
+  line-height: 1;
+}
+
+.lead {
+  margin-top: 20px;
+  max-width: 560px;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--on-dark-muted);
+}
+
+/* --- Form row: bar + "Book a Demo" ------------------------------------ */
+
+.formRow {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 820px;
+}
+
+/* Lifted above the rest of the section: every `Entrance` is its own stacking
+   context (its `rise` animation fills `both`, holding opacity/transform), so
+   the dial-code popover's own z-index is trapped inside this one — and the
+   later Entrances ("Book a Demo", the captcha, the fine print) painted over
+   the open popover purely by DOM order. */
+.barSlot {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Glass card holding a 2x2 grid: Name | Email / Phone | Initiate Call.
+   Each field is its own outlined control, so nothing reads as one long
+   crowded strip. */
+.bar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  /* Solid-ish tint instead of backdrop-filter: the ken-burns zoom behind this
+     bar changes every frame, and a live blur over it forced a full re-blur
+     (repaint) per frame — the main scroll/idle jank on slower devices. Over
+     the dark scrim the denser tint reads the same. */
+  background: rgba(20, 21, 24, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* The page is light-scheme, so browser-drawn UI inside this dark bar came
+     out light: the dial-code list's scrollbar, and Chrome's autofill fill
+     (#e8f0fe). Scoped to the form — not the section — so the reCAPTCHA
+     iframe's scheme still matches its embedder and keeps a clear backdrop. */
+  color-scheme: dark;
+}
+
+.cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  height: 56px;
+  padding-inline: 16px;
+  border-radius: var(--radius-btn);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
+}
+
+.cell:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.cell:focus-within {
+  border-color: rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(255, 77, 0, 0.16);
+}
+
+.cell:has([aria-invalid="true"]) {
+  border-color: #ff8a73;
+}
+
+.phoneCell {
+  gap: 8px;
+}
+
+.cellIcon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--on-dark-muted);
+  transition: color var(--dur) var(--ease);
+}
+
+.cell:focus-within .cellIcon {
+  color: #fff;
+}
+
+.cellInput {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: none;
+  font: inherit;
+  font-size: 16px;
+  color: #fff;
+}
+
+.cellInput::placeholder {
+  color: var(--on-dark-muted);
+}
+
+/* Chrome paints autofilled inputs — and ones merely previewing a hovered
+   suggestion — with a UA `background-color ... !important` and its own text
+   colour, which author styles can't override. The cell behind is translucent,
+   so rather than covering that with an opaque inset shadow, the fill is
+   stalled by a transition that never finishes. Where that can't apply
+   (reduced motion zeroes transition durations), `color-scheme: dark` on
+   `.bar` makes the fallback Chrome's dark tint instead of the light one. */
+.cellInput:-webkit-autofill,
+.cellInput:-webkit-autofill:hover,
+.cellInput:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
+
+.dialWrap {
+  position: relative;
+  flex: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* On phones the dial trigger sits ~70px in from the cell edge, so a 280px
+   popover anchored to it ran past the viewport (and, even while hidden,
+   widened the page's scroll area). Anchor it to the full-width cell
+   instead and let it span that. */
+@media (max-width: 767px) {
+  .dialWrap {
+    position: static;
+  }
+
+  .dialWrap > [role="presentation"] {
+    left: 0;
+    right: 0;
+    width: auto;
+    max-width: none;
+  }
+}
+
+@keyframes cellShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.shake {
+  animation: cellShake 320ms var(--ease);
+}
+
+/* --- Submit — CSS mesh gradient reconstructing initiate-call-button.png --- */
+
+.submit {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 56px;
+  padding-inline: 26px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  background-image:
+    radial-gradient(60% 150% at 3% 18%, #a2c19f 0%, rgba(162, 193, 159, 0) 58%),
+    radial-gradient(55% 140% at 2% 88%, #5aa8b8 0%, rgba(90, 168, 184, 0) 58%),
+    radial-gradient(75% 170% at 34% 8%, #1478d6 0%, rgba(20, 120, 214, 0) 62%),
+    radial-gradient(95% 150% at 40% 112%, #00043c 0%, rgba(0, 4, 60, 0) 68%),
+    linear-gradient(97deg, #17547c 0%, #0a4599 26%, #052a8e 52%, #01123f 100%);
+  background-size: 160% 160%;
+  background-position: 50% 50%;
+  transition: background-position 480ms var(--ease), transform var(--dur) var(--ease),
+    filter var(--dur) var(--ease);
+}
+
+/* Faint grain, reconstructing the source PNG's own texture. */
+.submit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Diagonal sheen — same two-layer "gate the visibility, run a continuous
+   inner animation" split as EngagementQueueIllustration's active-row sheen,
+   just gated by :hover here instead of a per-row class. */
+.submit::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  width: 40%;
+  z-index: 0;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: translateX(-160%) skewX(-12deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.submit:hover:not(:disabled)::after {
+  opacity: 1;
+  animation: submitSheen 1.1s linear infinite;
+}
+
+@keyframes submitSheen {
+  to { transform: translateX(260%) skewX(-12deg); }
+}
+
+.submit > * {
+  position: relative;
+  z-index: 1;
+}
+
+.submit:hover:not(:disabled) {
+  background-position: 40% 42%;
+}
+
+.submit:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.submit:disabled {
+  filter: saturate(0.7) brightness(0.85);
+  cursor: default;
+}
+
+.submitArrow {
+  flex: none;
+  transition: transform var(--dur) var(--ease);
+}
+
+.submit:hover:not(:disabled) .submitArrow {
+  transform: translateX(4px);
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* --- "Book a Demo" ------------------------------------------------------ */
+
+.demoWrap {
+  flex: none;
+  display: flex;
+}
+
+/* Two-class compound selector, not a bare `.demoButton` — a single class has
+   the same (0,1,0,0) specificity as Button.module.css's own `.lg`/`.light`,
+   so whichever wins would depend on stylesheet bundling order rather than
+   intent (the exact bug already hit and fixed for PricingPlans' `.cardDark
+   .cta` override). This compound selector always outranks
+   theirs regardless of import order. */
+.demoWrap .demoButton {
+  min-width: 0;
+  height: 52px;
+  padding-inline: 28px;
+}
+
+.formErrors {
+  margin-top: -4px;
+}
+
+.formErrors p {
+  font-size: 13px;
+  color: #ff8a73;
+}
+
+/* --- Captcha slot --------------------------------------------------------- */
+
+.captchaSlot {
+  margin-top: 20px;
+  width: 304px;
+  min-height: 78px;
+}
+
+/* Honeypot: off-screen, not display:none (some bots skip hidden inputs). */
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* --- Fine print ------------------------------------------------------------ */
+
+.fineprint {
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.fineprint:first-child {
+  margin-top: 20px;
+}
+
+/* --- Success state ---------------------------------------------------------- */
+
+.success {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: 100%;
+  min-height: 76px;
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: rgba(26, 159, 92, 0.14);
+  border: 1px solid rgba(26, 159, 92, 0.4);
+  animation: successIn 420ms var(--ease) both;
+}
+
+@keyframes successIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.successIcon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--success);
+  color: #fff;
+}
+
+.successIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.successTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.successBody {
+  margin-top: 2px;
+  font-size: 14px;
+  color: var(--on-dark-muted);
+}
+
+.resetLink {
+  margin-left: auto;
+  flex: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.resetLink:hover {
+  color: var(--brand);
+}
+
+/* --- Responsive ------------------------------------------------------------- */
+
+@media (max-width: 1279px) {
+  .section {
+    min-height: 0;
+    padding-block: 72px;
+  }
+}
+
+@media (max-width: 767px) {
+  .formRow {
+    align-items: stretch;
+  }
+
+  .bar {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .demoWrap .demoButton {
+    width: 100%;
+  }
+
+  .section {
+    padding-block: 56px;
+  }
+
+  .titleBreak {
+    display: none;
+  }
+}
+
+@media (max-width: 359px) {
+  .captchaSlot {
+    transform: scale(0.88);
+    transform-origin: left top;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop img {
+    animation: none;
+  }
+}

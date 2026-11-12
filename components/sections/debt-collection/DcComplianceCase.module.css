@@ -1,0 +1,148 @@
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 64px;
+  max-width: calc(1180px + var(--page-x) * 2);
+}
+
+/* Left-aligned variant of the shared centred header. */
+.title {
+  max-width: 560px;
+}
+
+.lead {
+  max-width: 520px;
+}
+
+.ticks {
+  margin-top: 28px;
+  display: grid;
+  gap: 14px;
+}
+
+.tick {
+  position: relative;
+  padding-left: 30px;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--fg);
+}
+
+/* Brand diamond marker — same shape as the HowItWorks rail ticks. */
+.tick::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.5em;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--brand);
+  transform: rotate(45deg);
+}
+
+.cta {
+  margin-top: 32px;
+}
+
+/* --- Case-study card ------------------------------------------------------ */
+
+.caseSlot {
+  display: flex;
+}
+
+.case {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  min-height: 460px;
+  background: #2a2a2a;
+  color: #fff;
+}
+
+.caseBg {
+  z-index: -2;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease);
+}
+
+.caseScrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.86) 0%,
+    rgba(0, 0, 0, 0.55) 50%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
+}
+
+@media (hover: hover) {
+  .case:hover .caseBg {
+    transform: scale(1.04);
+  }
+}
+
+.caseBody {
+  padding: 40px;
+}
+
+.caseEyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffb38f;
+}
+
+.caseTitle {
+  margin-top: 12px;
+  font-size: clamp(22px, 2.2vw, 28px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.caseText {
+  margin: 12px 0 28px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+@media (max-width: 1279px) {
+  .grid {
+    gap: 48px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    max-width: calc(720px + var(--page-x) * 2);
+  }
+
+  .case {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 767px) {
+  .tick {
+    font-size: 16px;
+  }
+
+  .case {
+    min-height: 380px;
+  }
+
+  .caseBody {
+    padding: 28px 22px;
+  }
+}

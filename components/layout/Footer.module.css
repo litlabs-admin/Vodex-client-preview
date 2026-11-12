@@ -1,0 +1,239 @@
+.footer {
+  background: var(--ink);
+  color: rgba(255, 255, 255, 0.7);
+  padding-top: 72px;
+  overflow: hidden;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) repeat(4, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.logo {
+  color: var(--brand);
+}
+
+.description {
+  margin-top: 20px;
+  max-width: 340px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.updatesLabel {
+  margin-top: 32px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.newsletter {
+  display: flex;
+  align-items: center;
+  margin-top: 14px;
+  max-width: 340px;
+  height: 48px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.newsletter input {
+  flex: 1;
+  height: 100%;
+  min-width: 0;
+  padding-inline: 16px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+}
+
+.newsletter input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.newsletter button {
+  flex: none;
+  height: 100%;
+  padding-inline: 22px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color var(--dur) var(--ease);
+}
+
+.newsletter button:hover {
+  background: var(--brand-hover);
+}
+
+.columnTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.columnLinks {
+  margin-top: 20px;
+  display: grid;
+  gap: 14px;
+}
+
+.columnLinks a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  transition: color var(--dur) var(--ease);
+}
+
+.columnLinks a:hover {
+  color: #fff;
+}
+
+.columnLinks svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* --- Legal / social bar ------------------------------------------------- */
+
+.bottom {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 32px;
+  font-size: 14px;
+}
+
+.bottomLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+}
+
+.bottomLinks a {
+  transition: color var(--dur) var(--ease);
+}
+
+.bottomLinks a:hover {
+  color: #fff;
+}
+
+/* --- Certifications / backers -------------------------------------------- */
+
+.divider {
+  margin-top: 56px;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sectionLabel {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.badgeRow {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 20px;
+}
+
+.certBadge {
+  height: 48px;
+  width: auto;
+}
+
+.badgeDivider {
+  align-self: stretch;
+  width: 1px;
+  min-height: 40px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.backersImg {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+}
+
+/* --- Wordmark --------------------------------------------------------------- */
+
+/* Fixed, shorter-than-natural height so the oversized wordmark bleeds off
+   the bottom edge instead of being fully visible. */
+.wordmarkWrap {
+  margin-top: 56px;
+  height: 13vw;
+  max-height: 200px;
+  overflow: hidden;
+}
+
+.wordmark {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* Matches the reference band's 4548x1003 viewBox so the wrapper crops the
+     wordmark at exactly the same point the raster version did. */
+  aspect-ratio: 4548 / 1003;
+}
+
+@media (max-width: 1023px) {
+  /* Brand block on its own row, then all four link columns side by side —
+     at 768px each column still has ~170px, enough for the longest label. */
+  .top {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    row-gap: 40px;
+  }
+
+  .brandCol {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 767px) {
+  .footer {
+    padding-top: 56px;
+  }
+
+  .top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+  }
+
+  .newsletter {
+    max-width: none;
+  }
+
+  .description {
+    max-width: none;
+  }
+
+  .badgeDivider {
+    display: none;
+  }
+
+  .bottom {
+    flex-direction: column;
+  }
+}
+
+/* Two link columns stop fitting their longest labels ("Investors &
+   Partners", "Promise-to-Pay Capture") below ~360px. */
+@media (max-width: 359px) {
+  .top {
+    grid-template-columns: 1fr;
+  }
+}

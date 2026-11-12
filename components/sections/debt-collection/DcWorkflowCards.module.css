@@ -1,0 +1,134 @@
+.grid {
+  margin: 56px auto 0;
+  max-width: 1344px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.cell {
+  display: flex;
+}
+
+.card {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 24px 26px;
+  background: #f7f7f7;
+  color: var(--fg);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
+}
+
+/* Brand bar that grows across the top edge on hover/focus. */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 420ms var(--ease);
+}
+
+.iconWrap {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--brand);
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.iconWrap svg {
+  width: 22px;
+  height: 22px;
+}
+
+.title {
+  margin-top: 22px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.description {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+
+.link {
+  margin-top: auto;
+  padding-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--dur) var(--ease);
+}
+
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-4px);
+    background: #fff;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
+  }
+
+  .card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .card:hover .iconWrap {
+    background: var(--brand);
+    color: #fff;
+  }
+
+  .card:hover .arrow {
+    transform: translateX(4px);
+  }
+}
+
+.card:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.card:active {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1279px) {
+  .grid {
+    margin-top: 40px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 880px;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    gap: 14px;
+  }
+
+  .card {
+    padding: 24px 20px;
+  }
+}

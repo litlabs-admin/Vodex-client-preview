@@ -1,0 +1,83 @@
+.start {
+  text-align: center;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.chips {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Per-chip stagger on load (delay set inline) — same curve as the global
+   `rise` Entrance, but a shorter travel suited to small pills. Local
+   keyframes: CSS Modules would hash a bare reference to the global one. */
+.item {
+  animation: chipIn 600ms var(--ease) both;
+}
+
+@keyframes chipIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding-inline: 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+@media (hover: hover) {
+  .chip:hover {
+    background: var(--brand);
+    border-color: var(--brand);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -10px rgba(255, 77, 0, 0.7);
+  }
+}
+
+.chip:focus-visible {
+  background: var(--brand);
+  border-color: var(--brand);
+}
+
+.chip:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 767px) {
+  .chips {
+    gap: 8px;
+  }
+
+  .chip {
+    min-height: 38px;
+    padding-inline: 14px;
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,280 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: transparent;
+  color: #fff;
+  transition: background-color 320ms var(--ease);
+}
+
+.navSolid {
+  background: var(--ink);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: var(--nav-h);
+  max-width: calc(var(--container-nav) + var(--page-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--page-x);
+}
+
+.logo {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  color: var(--brand);
+  transition: opacity var(--dur) var(--ease);
+}
+
+.logo:hover {
+  opacity: 0.82;
+}
+
+/* --- Primary links -------------------------------------------------------- */
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 21px;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.link {
+  position: relative;
+  padding-block: 4px;
+  color: #fff;
+  transition: color var(--dur) var(--ease);
+}
+
+/* Underline grows from the left on hover. */
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1.5px;
+  background: var(--brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease);
+}
+
+.link:hover::after {
+  transform: scaleX(1);
+}
+
+/* --- Actions -------------------------------------------------------------- */
+
+.actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.login {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 17px;
+  font-weight: 500;
+  transition: color var(--dur) var(--ease);
+}
+
+.login:hover {
+  color: var(--brand);
+}
+
+/* --- Mobile --------------------------------------------------------------- */
+
+.toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  margin-right: -8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggleBar {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: #fff;
+  transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+
+.toggleBar + .toggleBar {
+  margin-top: 5px;
+}
+
+.open .toggleBar:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+
+.open .toggleBar:nth-child(2) {
+  opacity: 0;
+}
+
+.open .toggleBar:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+.panel {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .links,
+  .login {
+    display: none;
+  }
+
+  .toggle {
+    display: inline-flex;
+    flex-direction: column;
+  }
+
+  /* grid-template-rows 0fr -> 1fr, not a hardcoded max-height — the panel now
+     contains variable-height accordion groups (see .mobileSubPanel below),
+     so a guessed max-height ceiling would either clip an expanded group or
+     leave dead space when every group is collapsed. Same technique as
+     FaqAccordion's item collapse. The collapsing grid item (.panelInner)
+     must carry no padding of its own — padding can't shrink below its own
+     size, so it used to leave a ~32px strip of the first link peeking out
+     under the bar while "closed". The spacing lives on .panelBody instead.
+     visibility (delayed on close) keeps the collapsed links out of the tab
+     order. */
+  .panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    visibility: hidden;
+    background: var(--ink);
+    transition:
+      grid-template-rows 320ms var(--ease),
+      visibility 0s 320ms;
+  }
+
+  .panelOpen {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition:
+      grid-template-rows 320ms var(--ease),
+      visibility 0s;
+  }
+
+  .panelInner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* Scrolls on its own when the expanded menu is taller than the space
+     left under the header (phones in landscape, or every group open). */
+  .panelOpen .panelInner {
+    max-height: calc(100dvh - var(--nav-h));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .panelBody {
+    display: grid;
+    gap: 4px;
+    padding-block: 8px 24px;
+  }
+
+  .panelLink {
+    padding-block: 12px;
+    font-size: 17px;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .panelActions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    padding-top: 16px;
+  }
+
+  /* --- Mobile accordion groups (Solutions/Resources/Company) -------------
+     No hover on touch, and there's no "/solutions"/"/resources"/"/company"
+     hub page to navigate to on tap either — so each group is a disclosure:
+     tapping the label expands its own item list in place, the same content
+     the desktop mega-menu shows on hover. */
+
+  .mobileGroup {
+    display: grid;
+  }
+
+  .mobileGroupTrigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-align: left;
+    border: 0;
+    background: none;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .mobileGroupChevron {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    color: rgba(255, 255, 255, 0.6);
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .mobileGroupChevronOpen {
+    transform: rotate(180deg);
+  }
+
+  .mobileSubPanel {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    transition: grid-template-rows var(--dur) var(--ease);
+  }
+
+  .mobileSubPanel[data-open="true"] {
+    grid-template-rows: 1fr;
+  }
+
+  .mobileSubInner {
+    display: grid;
+    gap: 2px;
+    min-height: 0;
+    overflow: hidden;
+    padding-block: 4px 8px;
+  }
+
+  .mobileSubLink {
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.75);
+    transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+
+  .mobileSubLink:hover,
+  .mobileSubLink:focus-visible {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+  }
+}
+
+@media (max-width: 479px) {
+  .navCta {
+    display: none;
+  }
+}

@@ -1,0 +1,48 @@
+.bar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .bar {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    padding: 12px var(--page-x) calc(12px + env(safe-area-inset-bottom));
+    background: rgba(26, 26, 26, 0.96);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    transform: translateY(110%);
+    transition: transform 320ms var(--ease);
+  }
+
+  .bar[data-show="true"] {
+    transform: none;
+  }
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 48px;
+  border-radius: var(--radius-btn);
+  background: var(--brand);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  transition: background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.button:active {
+  transform: translateY(1px);
+  background: var(--brand-hover);
+}
+
+.arrow {
+  width: 18px;
+  height: 18px;
+}

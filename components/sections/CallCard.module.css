@@ -1,0 +1,226 @@
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 20px;
+  padding: 20px;
+  background: #fff;
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+.card:hover {
+  border-color: transparent;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px -20px rgba(0, 0, 0, 0.25);
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.avatar {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardTitle {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--fg);
+}
+
+.meta {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--fg-muted);
+}
+
+.meta strong {
+  font-weight: 500;
+  color: var(--fg-muted);
+}
+
+.meta span {
+  color: var(--brand);
+  font-weight: 500;
+}
+
+/* --- Play button ------------------------------------------------------------ */
+
+.playButton {
+  flex: none;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  transition:
+    background-color var(--dur) var(--ease),
+    box-shadow 150ms var(--ease),
+    transform 150ms var(--ease);
+}
+
+.playButton:hover {
+  background: var(--brand-hover);
+  box-shadow: 0 6px 16px -4px rgba(255, 77, 0, 0.5);
+}
+
+.playButton:active {
+  transform: scale(0.94);
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  animation: iconPop 180ms var(--ease);
+}
+
+/* Play's triangle sits slightly left of true-center visually, so nudge it. */
+.playButton svg:first-child {
+  margin-left: 1px;
+}
+
+@keyframes iconPop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* --- Waveform / progress ----------------------------------------------------- */
+
+.waveformRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.waveformWrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  cursor: pointer;
+}
+
+.waveformWrap:hover {
+  opacity: 0.9;
+}
+
+.waveformBase,
+.waveformProgress {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.waveformBase {
+  color: var(--hairline-strong);
+}
+
+.waveformProgress {
+  color: var(--brand);
+  clip-path: inset(0 calc((1 - var(--progress, 0)) * 100%) 0 0);
+  transition: clip-path 100ms linear;
+}
+
+/* Bars in the "played" (orange) layer gently bounce while playing, like a
+   live level meter, instead of just sitting there as a static fill. Delay is
+   staggered per bar via the --i custom property AudioWaveform sets on each
+   rect, so the motion reads as a wave rather than everything pulsing in
+   lockstep. The muted base layer stays still — only the played portion
+   should look "live". */
+.waveformWrap.playing .waveformProgress rect {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wavePulse 1000ms ease-in-out infinite;
+  animation-delay: calc(var(--i) * 45ms);
+}
+
+@keyframes wavePulse {
+  0%,
+  100% {
+    transform: scaleY(0.8);
+  }
+  50% {
+    transform: scaleY(1.22);
+  }
+}
+
+.time {
+  flex: none;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-muted);
+}
+
+.audioEl {
+  display: none;
+}
+
+.quote {
+  margin-top: 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+
+/* Pushes the status pill to the card's bottom edge regardless of how many
+   lines the title/quote above wrap to, so it aligns across the row — same
+   technique used for the Resources cards' "Read More" buttons. */
+.status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  height: 44px;
+  padding-inline: 16px;
+  border-radius: 14px;
+  background: #fdece0;
+}
+
+.statusDot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand);
+}
+
+.statusText {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--brand);
+}

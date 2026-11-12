@@ -1,0 +1,112 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: var(--radius-btn);
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+/* The arrow nudges forward on hover — the only motion on the control. */
+.button svg {
+  transition: transform var(--dur) var(--ease);
+}
+
+.button:hover svg {
+  transform: translateX(4px);
+}
+
+/* --- Sizes --------------------------------------------------------------- */
+
+/* Hero CTAs: 52px tall, 20px label. Both hero buttons share one width so the
+   pair reads as a matched set regardless of label length. */
+.lg {
+  height: 52px;
+  min-width: min(268px, 100%);
+  padding-inline: 32px;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+
+/* Navbar CTA: 45px tall, 16px label. */
+.sm {
+  height: 45px;
+  font-size: 17px;
+  padding-inline: 18px;
+  gap: 8px;
+}
+
+/* Square, not the old hand-drawn arrow's flat 18x10 — the Lucide ArrowRight
+   glyph is a standard 24x24 icon, so a flat box just shrinks it down with
+   dead space on either side instead of centering it at full size. */
+.sm svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* --- Variants ------------------------------------------------------------ */
+
+.primary {
+  background: var(--brand);
+  color: #fff;
+}
+
+.primary:hover {
+  background: var(--brand-hover);
+}
+
+/* Outlined control sitting on photography. */
+.secondary {
+  color: #fff;
+  border: 1px solid var(--stroke-on-photo);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: #fff;
+}
+
+.light {
+  background: #fff;
+  color: var(--ink);
+}
+
+.light:hover {
+  background: #f0f0f0;
+}
+
+/* Dark pill CTA — used on light-card surfaces (e.g. pricing plan cards)
+   where a plain filled button needs to read as "neutral", not "primary". */
+.dark {
+  background: var(--ink);
+  color: #fff;
+}
+
+.dark:hover {
+  background: #2a2a2a;
+}
+
+@media (max-width: 767px) {
+  .lg {
+    height: auto;
+    min-height: 48px;
+    padding-block: 10px;
+    white-space: normal;
+    text-align: center;
+    min-width: 0;
+    width: 100%;
+    padding-inline: 24px;
+    font-size: 17px;
+  }
+}

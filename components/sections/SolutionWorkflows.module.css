@@ -1,0 +1,269 @@
+.section {
+  background: var(--ink);
+  color: #fff;
+  padding-block: 80px 88px;
+}
+
+.header {
+  max-width: 780px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding-block: 4px;
+  padding-inline: 20px;
+  border-radius: var(--radius-pill);
+  background: #ececec;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.title {
+  margin-top: 24px;
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+}
+
+.title :global(.accent) {
+  font-size: 1.05em;
+}
+
+.lead {
+  margin-top: 20px;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--on-dark-muted);
+}
+
+/* Inset band — narrower than the full 1440px container, matches the
+   FeaturedCaseStudy/FinalCta family already established in this project. */
+.band {
+  margin-top: 56px;
+  max-width: 1327px;
+  margin-inline: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+  aspect-ratio: 436 / 492;
+  background: #111;
+}
+
+.card img {
+  object-fit: cover;
+}
+
+/* Always-on version of CoreFeatures.module.css's hover-triggered .scrim —
+   same gradient shape, opacity hardcoded to visible since these cards have
+   no hover-expand mechanic. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.82) 0%,
+    rgba(0, 0, 0, 0.2) 45%,
+    transparent 70%
+  );
+}
+
+.copy {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  color: #fff;
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.cardDescription {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* --- Linked scrim card (optional `cta`) ---------------------------------- */
+
+.cardLink {
+  position: absolute;
+  inset: 0;
+  display: block;
+  color: #fff;
+}
+
+.cardImage {
+  object-fit: cover;
+  transition: transform 700ms var(--ease);
+}
+
+.cardLink .scrim {
+  transition: opacity 400ms var(--ease);
+}
+
+.cardLink .copy,
+.cardLink .cardTitle,
+.cardLink .cardDescription {
+  display: block;
+}
+
+.cardCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding-bottom: 3px;
+  font-size: 15px;
+  font-weight: 600;
+  /* Brand underline that grows from the left on hover. */
+  background: linear-gradient(var(--brand), var(--brand)) left bottom / 32px 2px no-repeat;
+  transition: background-size 420ms var(--ease), color var(--dur) var(--ease);
+}
+
+.cardCtaArrow {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--dur) var(--ease);
+}
+
+@media (hover: hover) {
+  .cardLink:hover .cardImage {
+    transform: scale(1.05);
+  }
+
+  .cardLink:hover .cardCta {
+    background-size: 100% 2px;
+    color: #ffb38f;
+  }
+
+  .cardLink:hover .cardCtaArrow {
+    transform: translateX(4px);
+  }
+}
+
+.cardLink:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: -4px;
+  border-radius: 0;
+}
+
+.cardLink:focus-visible .cardCta {
+  background-size: 100% 2px;
+}
+
+/* "panel" variant — photo + light body (title/description),
+   no icon. Column count is caller-driven via --cols (e.g. 4 for
+   "Four core workflows"), unlike .grid's fixed 3. */
+.gridPanel {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), 1fr);
+  gap: 14px;
+}
+
+.panelCard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 0;
+  background: #f4f4f4;
+}
+
+.panelThumb {
+  position: relative;
+  aspect-ratio: 5 / 4;
+}
+
+.panelBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 20px 24px;
+}
+
+.panelTitle {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--fg);
+}
+
+.panelDescription {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+
+.closing {
+  margin-top: 48px;
+  text-align: center;
+  font-size: var(--fs-body);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.closingLink {
+  color: var(--brand);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.closingLink:hover {
+  color: #ff7a3d;
+}
+
+@media (max-width: 1279px) {
+  .section {
+    padding-block: 64px 72px;
+  }
+
+  .band {
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .grid,
+  .gridPanel {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .grid,
+  .gridPanel {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 479px) {
+  .section {
+    padding-block: 48px 56px;
+  }
+
+  .closing {
+    margin-top: 36px;
+  }
+}

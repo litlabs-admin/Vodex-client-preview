@@ -1,0 +1,22 @@
+node_modules/
+.next/
+.next-verify*/
+out/
+build/
+.DS_Store
+*.pem
+npm-debug.log*
+.env*
+!.env.example
+next-env.d.ts
+tsconfig.tsbuildinfo
+*.zip
+
+# Terraform
+terraform/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+tfplan
+crash.log

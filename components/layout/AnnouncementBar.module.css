@@ -1,0 +1,122 @@
+.bar {
+  position: relative;
+  z-index: 3;
+  background: var(--brand);
+  color: #fff;
+  max-height: var(--announce-h);
+  opacity: 1;
+  overflow: hidden;
+  transition: max-height var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+
+.dismissed {
+  max-height: 0;
+  opacity: 0;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  min-height: var(--announce-h);
+  padding-block: 4px;
+  font-size: 16px;
+}
+
+.tag {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  height: 27px;
+  padding-inline: 16px;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  color: var(--brand);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.message {
+  color: #fff;
+}
+
+.link {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Square, not the old hand-drawn arrow's flat 20x11 — same reasoning as
+   Button.module.css's .sm svg. */
+.link svg {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--dur) var(--ease);
+}
+
+.link:hover svg {
+  transform: translateX(4px);
+}
+
+.close {
+  position: absolute;
+  top: 50%;
+  right: var(--page-x);
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.close:hover,
+.close:focus-visible {
+  opacity: 1;
+}
+
+.close svg {
+  width: 12px;
+  height: 12px;
+}
+
+@media (max-width: 1279px) {
+  .inner {
+    gap: 20px;
+    font-size: 14px;
+  }
+
+  .tag {
+    height: 24px;
+    padding-inline: 13px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .inner {
+    gap: 14px;
+  }
+
+  .message {
+    display: none;
+  }
+}
+
+@media (max-width: 479px) {
+  .inner {
+    justify-content: center;
+    padding-right: 32px;
+  }
+}

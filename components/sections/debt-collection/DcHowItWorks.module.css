@@ -1,0 +1,163 @@
+.band {
+  position: relative;
+  max-width: 1327px;
+  margin: 56px auto 0;
+}
+
+/* Hairline rail behind the step numbers. Scroll-driven where supported
+   (same `view()` timeline as the global `.enter` reveal), otherwise a plain
+   load-time draw. Global reduced-motion rule neutralises both. */
+.rail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--brand) 0%, rgba(255, 77, 0, 0.35) 60%, rgba(255, 255, 255, 0.12) 100%);
+  transform-origin: left;
+  animation: railDraw 1.2s var(--ease) both;
+}
+
+@supports (animation-timeline: view()) {
+  .rail {
+    animation-timeline: view();
+    animation-range: entry 10% cover 45%;
+  }
+}
+
+@keyframes railDraw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  padding-top: 24px;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 24px 32px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+/* Small brand tick where each card meets the rail. */
+.step::before {
+  content: "";
+  position: absolute;
+  top: -25px;
+  left: 24px;
+  width: 9px;
+  height: 9px;
+  background: var(--brand);
+  border-radius: 2px;
+  transform: translateY(-4px) rotate(45deg);
+  box-shadow: 0 0 0 4px var(--ink);
+}
+
+@media (hover: hover) {
+  .step:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.24);
+  }
+
+  .step:hover .number {
+    transform: translateY(-2px);
+  }
+}
+
+.number {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 1;
+  color: var(--brand);
+  transition: transform var(--dur) var(--ease);
+}
+
+.stepTitle {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #fff;
+}
+
+.stepDescription {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--on-dark-muted);
+}
+
+.pilot {
+  margin-top: 40px;
+  text-align: center;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--on-dark-muted);
+}
+
+.pilot strong {
+  font-weight: 600;
+  color: #fff;
+}
+
+@media (max-width: 1279px) {
+  .band {
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 40px;
+  }
+
+  /* The rail only reads as a sequence on one row — drop it once steps wrap. */
+  .rail {
+    display: none;
+  }
+
+  .step::before {
+    display: none;
+  }
+
+  .steps {
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .steps {
+    grid-template-columns: 1fr;
+    row-gap: 14px;
+    max-width: 480px;
+    margin-inline: auto;
+  }
+
+  .step {
+    padding: 24px 20px 26px;
+  }
+
+  .number {
+    font-size: 30px;
+  }
+
+  .pilot {
+    margin-top: 32px;
+  }
+}

@@ -1,0 +1,83 @@
+.section {
+  background: var(--bg);
+  padding-block: 88px 96px;
+}
+
+.header {
+  max-width: 720px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding-block: 4px;
+  padding-inline: 20px;
+  border-radius: var(--radius-pill);
+  background: #ececec;
+  color: var(--fg);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.title {
+  margin-top: 24px;
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+}
+
+.title :global(.accent) {
+  font-size: 1.05em;
+}
+
+.lead {
+  margin-top: 20px;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--fg-muted);
+}
+
+/* --- Card frame -------------------------------------------------------------- */
+
+.frame {
+  margin-top: 56px;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding: 28px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1279px) {
+  .section {
+    padding-block: 64px 72px;
+  }
+
+  .frame {
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 479px) {
+  .section {
+    padding-block: 48px 56px;
+  }
+
+  .frame {
+    padding: 16px;
+  }
+}

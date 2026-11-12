@@ -1,0 +1,195 @@
+.section {
+  background: var(--bg);
+  padding-block: 88px 96px;
+}
+
+.grid {
+  max-width: 1180px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+  gap: 64px;
+  /* Both columns stretch to the row's height (grid default) so the side
+     card can be told to fill it — see .sideCol/.card below. Reference has
+     the card's bottom edge land exactly at the accordion's last item. */
+  align-items: stretch;
+}
+
+.heading {
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+  color: var(--fg);
+}
+
+/* Serif treatment (no colour change) — unlike the orange italic `.accent`
+   used elsewhere, this heading's second word is just a plain serif swap. */
+.serif {
+  font-family: var(--font-serif);
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* Stretched to the grid row's height by .grid's align-items: stretch; .card
+   below then flexes to consume whatever's left after .sideText, so its
+   bottom edge (and the button inside it) lands at the row's full height
+   regardless of how tall the accordion column ends up. */
+.sideCol {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sideText {
+  margin-top: 24px;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--fg);
+}
+
+/* --- Accordion ------------------------------------------------------------ */
+
+.list {
+  margin-top: 40px;
+  display: grid;
+  gap: 12px;
+}
+
+.item {
+  border: 1px solid var(--hairline-strong);
+  border-radius: 14px;
+  transition: border-color var(--dur) var(--ease);
+  overflow: hidden;
+}
+
+.item:hover {
+  border-color: #bdbdbd;
+}
+
+.trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px;
+  text-align: left;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.plus {
+  flex: none;
+  color: var(--fg-muted);
+  transition: transform var(--dur) var(--ease);
+}
+
+.itemOpen .plus {
+  transform: rotate(45deg);
+  color: var(--brand);
+}
+
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 280ms var(--ease);
+}
+
+.itemOpen .panel {
+  grid-template-rows: 1fr;
+}
+
+.panelInner {
+  overflow: hidden;
+}
+
+.answer {
+  padding: 0 22px 20px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--fg-muted);
+}
+
+/* --- Side card -------------------------------------------------------------- */
+
+.card {
+  margin-top: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 18px;
+  text-align: center;
+}
+
+.cardIcon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-inline: auto;
+  border-radius: 10px;
+  background: var(--ink);
+  color: #fff;
+}
+
+.cardTitle {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.cardBody {
+  margin-top: 10px;
+  /* Gap above the button lives here, not as padding on the fixed-height
+     button (which pushed its label below centre). */
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+
+/* auto margin pushes the button to the card's bottom edge once .card is
+   stretched taller than its natural content (see .card/.sideCol above);
+   with no extra height to fill (e.g. mobile's single-column stack) this
+   still leaves the button's natural spacing intact. */
+.cardButton {
+  margin-top: auto;
+  width: 100%;
+  /* Button's own .lg size sets min-width: 268px (only zeroed out below
+     720px) — without this override, at viewport widths where this card
+     sits in the 340px-capped grid column (e.g. 821-1100px) the button can
+     press right up against the card's padding with almost no clearance
+     against its rounded corner. Zeroing min-width lets width: 100% fully
+     govern at every breakpoint. */
+  min-width: 0;
+}
+
+@media (max-width: 1279px) {
+  .section {
+    padding-block: 64px 72px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 479px) {
+  .section {
+    padding-block: 48px 56px;
+  }
+
+  .trigger {
+    padding: 16px 18px;
+    font-size: 16px;
+  }
+}
