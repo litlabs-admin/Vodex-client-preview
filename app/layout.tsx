@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Ancizar_Serif, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
@@ -11,13 +12,18 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const ancizar = Ancizar_Serif({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["italic"],
+// Self-hosted rather than next/font/google: for this newer family Google
+// Fonts sometimes serves extensionless font URLs, which crashes the
+// next/font Google loader at build time ("Cannot read properties of null
+// (reading '1')"). The file is Google's latin italic variable woff2, so one
+// file covers the 400–600 range we use. (Font is SIL OFL.)
+const ancizar = localFont({
+  src: "./fonts/AncizarSerif-Italic-latin.woff2",
+  weight: "400 600",
+  style: "italic",
   display: "swap",
   variable: "--font-ancizar",
-  // next/font ships no metric overrides for this family yet.
+  // No fallback metric overrides wanted for this accent face.
   adjustFontFallback: false,
   fallback: ["Iowan Old Style", "Georgia", "serif"],
   // Accent-only face (a word or two per heading) — don't let its preload
